@@ -2,6 +2,7 @@
 function nextScene(nextSceneId) {
     const activeScene = document.querySelector('.scene.active');
     if (activeScene) {
+        if (activeScene.id === 'scene-wishes') clearInterval(wishInterval);
         activeScene.classList.remove('active');
         activeScene.classList.add('exit');
         
@@ -54,6 +55,7 @@ const wishes = [
 
 let wishInterval;
 function startWishes() {
+    if (wishInterval) clearInterval(wishInterval);
     const wrapper = document.getElementById('wishes-wrapper');
     wrapper.innerHTML = '';
     let currentWish = 0;
