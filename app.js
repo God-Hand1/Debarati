@@ -1,5 +1,19 @@
+// --- Background Music ---
+let musicStarted = false;
+
+function playBgMusic() {
+    if (musicStarted) return;
+    const audio = document.getElementById('bg-music');
+    if (audio) {
+        audio.volume = 0.3;
+        audio.play().catch(() => {});
+        musicStarted = true;
+    }
+}
+
 // --- Scene Management ---
 function nextScene(nextSceneId) {
+    if (!musicStarted) playBgMusic();
     const activeScene = document.querySelector('.scene.active');
     if (activeScene) {
         if (activeScene.id === 'scene-wishes') clearInterval(wishInterval);
