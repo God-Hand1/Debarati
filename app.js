@@ -36,6 +36,7 @@ function nextScene(nextSceneId) {
             // Trigger scene-specific logic
             if (nextSceneId === 'scene-wishes') startWishes();
             if (nextSceneId === 'scene-photos') initGallery();
+            if (nextSceneId === 'scene-reasons') initReasonCards();
             if (nextSceneId === 'scene-nightsky') initNightSky();
             if (nextSceneId === 'scene-celebration') startFireworks();
             if (nextSceneId === 'scene-ending') stopFireworks();
@@ -148,6 +149,23 @@ function initGallery() {
             const moveY = mouseY * 50 * depth;
             
             card.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${rot}deg)`;
+        });
+    });
+}
+
+// --- Scene 5: Reason Cards Touch Flip ---
+let reasonCardsInitialized = false;
+
+function initReasonCards() {
+    if (reasonCardsInitialized) return;
+    reasonCardsInitialized = true;
+
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (!isTouchDevice) return;
+
+    document.querySelectorAll('.reason-card').forEach(card => {
+        card.addEventListener('click', function () {
+            this.classList.toggle('flipped');
         });
     });
 }

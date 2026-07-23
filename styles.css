@@ -305,15 +305,15 @@ body {
 /* Reasons Cards Scene */
 .cards-container {
     display: flex;
-    gap: 2rem;
+    gap: clamp(0.8rem, 2.5vw, 2rem);
     flex-wrap: wrap;
     justify-content: center;
     perspective: 1000px;
 }
 
 .reason-card {
-    width: 250px;
-    height: 350px;
+    width: clamp(140px, 38vw, 250px);
+    height: clamp(190px, 34vh, 350px);
     background: transparent;
     perspective: 1000px;
 }
@@ -327,7 +327,8 @@ body {
     transform-style: preserve-3d;
 }
 
-.reason-card:hover .card-inner {
+.reason-card:hover .card-inner,
+.reason-card.flipped .card-inner {
     transform: rotateY(180deg);
 }
 
@@ -343,21 +344,21 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem;
+    padding: clamp(1rem, 2.5vw, 2rem);
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
 }
 
 .card-front svg {
-    width: 48px;
-    height: 48px;
+    width: clamp(32px, 6vw, 48px);
+    height: clamp(32px, 6vw, 48px);
     color: var(--gold);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
 }
 
 .card-front h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.5rem;
+    font-size: clamp(0.9rem, 3vw, 1.5rem);
     color: var(--white);
 }
 
@@ -368,7 +369,7 @@ body {
 
 .card-back p {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 1.2rem;
+    font-size: clamp(0.85rem, 2.5vw, 1.2rem);
     font-style: italic;
     color: var(--soft-pink);
     line-height: 1.5;
