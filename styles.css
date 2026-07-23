@@ -505,8 +505,10 @@ body {
 }
 
 .envelope.open .letter-paper {
-    height: 60vh;
-    max-height: 500px;
+    width: 120%;
+    left: -10%;
+    height: 50vh;
+    max-height: 450px;
     bottom: 80px;
     z-index: 10;
     background: #fff;
