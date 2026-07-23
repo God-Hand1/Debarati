@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Debarati</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Global Elements -->
+    <canvas id="global-canvas"></canvas>
+    <div id="ambient-light"></div>
+    <div id="vignette"></div>
+
+    <div id="app">
+        
+        <!-- Scene 1: Hero Introduction -->
+        <section class="scene active" id="scene-hero">
+            <div class="glass-card">
+                <h1 class="title">Happy Birthday</h1>
+                <h1 class="title name-glow">Debarati</h1>
+                <p class="subtitle">"Today is all about celebrating someone truly wonderful."</p>
+                <button class="magnetic-btn" onclick="nextScene('scene-quote')">
+                    <span>Begin the Journey</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Scene 2: Quote Reveal -->
+        <section class="scene hidden" id="scene-quote">
+            <div class="quote-container">
+                <p class="cinematic-quote">"Some people make the world brighter simply by being themselves."</p>
+            </div>
+            <button class="magnetic-btn floating-btn next-btn" onclick="nextScene('scene-wishes')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 3: Animated Birthday Wishes -->
+        <section class="scene hidden" id="scene-wishes">
+            <div class="wishes-container" id="wishes-wrapper">
+                <!-- Wishes will be injected via JS -->
+            </div>
+            <button class="magnetic-btn floating-btn next-btn" onclick="nextScene('scene-photos')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 4: Photo Memories -->
+        <section class="scene hidden" id="scene-photos">
+            <h2 class="scene-title">Beautiful Memories</h2>
+            <div class="photo-gallery" id="gallery-container">
+                <!-- Photos will be injected via JS -->
+            </div>
+            <button class="magnetic-btn floating-btn next-btn" onclick="nextScene('scene-reasons')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 5: Reasons You're Amazing -->
+        <section class="scene hidden" id="scene-reasons">
+            <h2 class="scene-title">Why You're Amazing</h2>
+            <div class="cards-container">
+                <div class="reason-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                            <h3>Your Heart</h3>
+                        </div>
+                        <div class="card-back"><p>You always care so deeply about the people around you.</p></div>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            <h3>Your Smile</h3>
+                        </div>
+                        <div class="card-back"><p>It has the power to light up any room and make everything better.</p></div>
+                    </div>
+                </div>
+                <div class="reason-card">
+                    <div class="card-inner">
+                        <div class="card-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            <h3>Your Strength</h3>
+                        </div>
+                        <div class="card-back"><p>The way you handle everything with grace is truly inspiring.</p></div>
+                    </div>
+                </div>
+            </div>
+            <button class="magnetic-btn floating-btn next-btn" onclick="nextScene('scene-letter')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 6: Animated Letter -->
+        <section class="scene hidden" id="scene-letter">
+            <div class="letter-wrapper">
+                <div class="envelope" id="envelope" onclick="openEnvelope()">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body">
+                        <div class="wax-seal">
+                            <svg viewBox="0 0 24 24" fill="white" stroke="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                    </div>
+                    <div class="letter-paper" id="letter-paper">
+                        <div class="letter-content">
+                            <p class="greeting">Dear Debarati,</p>
+                            <p>Happy Birthday!</p>
+                            <p>Today isn't just another day. It's a celebration of someone who makes life brighter simply by being herself.</p>
+                            <p>May your journey ahead be filled with happiness, success, unforgettable memories, beautiful surprises, good health, and endless reasons to smile.</p>
+                            <p>May every dream find its destination and every challenge become another reason to grow stronger.</p>
+                            <p>Thank you for being the wonderful person you are. Wishing you the happiest birthday and an amazing year ahead.</p>
+                            <p class="closing">With warm wishes,</p>
+                            <p class="signature">Samrat</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="tap-hint" id="envelope-hint">Click to open</p>
+            </div>
+            <button class="magnetic-btn floating-btn next-btn" id="letter-next-btn" style="opacity:0; pointer-events:none;" onclick="nextScene('scene-nightsky')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 7: Night Sky -->
+        <section class="scene hidden" id="scene-nightsky">
+            <div class="stars-container" id="stars-container"></div>
+            <div class="moon-glow"></div>
+            <h2 class="sky-text">Before the night ends...</h2>
+            <button class="magnetic-btn" style="margin-top: 40px;" onclick="nextScene('scene-celebration')">
+                <span>Make a Wish</span>
+            </button>
+        </section>
+
+        <!-- Scene 8: Grand Celebration -->
+        <section class="scene hidden" id="scene-celebration">
+            <canvas id="fireworks-canvas"></canvas>
+            <h1 class="celebration-title">Let's Celebrate!</h1>
+            <button class="magnetic-btn floating-btn next-btn" style="z-index:10;" onclick="nextScene('scene-ending')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+            </button>
+        </section>
+
+        <!-- Scene 9: Ending Scene -->
+        <section class="scene hidden" id="scene-ending">
+            <div class="ending-content">
+                <div class="glowing-roses" id="glowing-roses"></div>
+                <h1 class="title">Happy Birthday</h1>
+                <h1 class="title name-glow">Debarati</h1>
+                <p class="subtitle ending-subtitle">May your life always be filled with happiness.</p>
+                <p class="signature-large">With Love,<br>Samrat</p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="app.js"></script>
+</body>
+</html>

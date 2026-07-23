@@ -1,0 +1,594 @@
+:root {
+    --primary-bg: #1a0505;
+    --primary-red: #8B0000;
+    --burgundy: #800020;
+    --wine-red: #722F37;
+    --crimson: #DC143C;
+    --gold: #D4AF37;
+    --white: #FFFFFF;
+    --soft-pink: #FFB6C1;
+    --text-main: #fcfcfc;
+    --glass-bg: rgba(25, 5, 5, 0.4);
+    --glass-border: rgba(255, 215, 0, 0.15);
+    --transition-speed: 1.2s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Global Canvas for Particles */
+#global-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+#fireworks-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#ambient-light {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 150vw;
+    height: 150vh;
+    background: radial-gradient(circle, rgba(114,47,55,0.15) 0%, rgba(26,5,5,0) 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+#vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 150px rgba(0,0,0,0.9);
+    pointer-events: none;
+    z-index: 99;
+}
+
+#app {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+}
+
+/* Scenes */
+.scene {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed) ease, transform var(--transition-speed) cubic-bezier(0.25, 1, 0.5, 1);
+    transform: scale(0.95);
+    z-index: 1;
+}
+
+.scene.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 10;
+}
+
+.scene.exit {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.05);
+    filter: blur(10px);
+}
+
+/* Typography */
+.title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.name-glow {
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+.subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    font-style: italic;
+    color: var(--soft-pink);
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    opacity: 0.8;
+}
+
+.cinematic-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-style: italic;
+    text-align: center;
+    color: var(--white);
+    max-width: 800px;
+    line-height: 1.4;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    padding: 0 20px;
+}
+
+.scene-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    color: var(--gold);
+    margin-bottom: 3rem;
+    position: absolute;
+    top: 10%;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+/* Glassmorphism */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 4rem 3rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 90%;
+}
+
+/* Buttons */
+.magnetic-btn {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 1rem 3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.magnetic-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+    z-index: -1;
+}
+
+.magnetic-btn:hover {
+    color: var(--primary-bg);
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.magnetic-btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.floating-btn {
+    position: absolute;
+    bottom: 10%;
+    padding: 1rem;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); }
+}
+
+/* Wishes Scene */
+.wishes-container {
+    position: relative;
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wish-text {
+    position: absolute;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    color: var(--white);
+    text-align: center;
+    max-width: 80%;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease;
+}
+.wish-text.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Photo Gallery Scene */
+.photo-gallery {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    perspective: 1000px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.photo-card {
+    position: absolute;
+    width: clamp(200px, 20vw, 300px);
+    height: clamp(300px, 30vw, 450px);
+    background: var(--white);
+    padding: 10px 10px 40px 10px;
+    border-radius: 4px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    transform-origin: center center;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease;
+    cursor: pointer;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.photo-card:hover {
+    z-index: 100 !important;
+    transform: scale(1.1) rotate(0deg) !important;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* Reasons Cards Scene */
+.cards-container {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    perspective: 1000px;
+}
+
+.reason-card {
+    width: 250px;
+    height: 350px;
+    background: transparent;
+    perspective: 1000px;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+}
+
+.reason-card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+}
+
+.card-front svg {
+    width: 48px;
+    height: 48px;
+    color: var(--gold);
+    margin-bottom: 1rem;
+}
+
+.card-front h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--white);
+}
+
+.card-back {
+    transform: rotateY(180deg);
+    background: rgba(114, 47, 55, 0.6);
+}
+
+.card-back p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--soft-pink);
+    line-height: 1.5;
+}
+
+/* Animated Letter Scene */
+.letter-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: #5a1818;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    transition: transform 0.5s ease;
+}
+
+.envelope:hover {
+    transform: translateY(-10px);
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-top: 100px solid #722F37;
+    z-index: 3;
+    transform-origin: top;
+    transition: transform 0.8s ease;
+}
+
+.envelope-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-left: 150px solid #6b1d1d;
+    border-right: 150px solid #6b1d1d;
+    border-bottom: 100px solid #800020;
+    z-index: 2;
+}
+
+.wax-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: #8B0000;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.wax-seal svg {
+    width: 20px;
+    height: 20px;
+}
+
+.letter-paper {
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 180px;
+    background: #fdf5e6;
+    z-index: 1;
+    border-radius: 2px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+    padding: 20px;
+    overflow: hidden;
+}
+
+.letter-content {
+    color: #333;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0;
+    transition: opacity 1s ease 0.5s;
+}
+
+.letter-content p {
+    margin-bottom: 1rem;
+}
+
+.letter-content .greeting, .letter-content .signature {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 600;
+}
+
+.letter-content .signature {
+    font-size: 1.5rem;
+    color: var(--primary-red);
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+.envelope.open .wax-seal {
+    opacity: 0;
+}
+
+.envelope.open .letter-paper {
+    height: 500px;
+    bottom: 50px;
+    z-index: 10;
+    background: #fff;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.envelope.open .letter-content {
+    opacity: 1;
+}
+
+.tap-hint {
+    margin-top: 30px;
+    font-family: 'Inter', sans-serif;
+    color: var(--soft-pink);
+    letter-spacing: 1px;
+    animation: pulseOpacity 2s infinite;
+}
+
+@keyframes pulseOpacity {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Night Sky Scene */
+.stars-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.moon-glow {
+    position: absolute;
+    top: 20%;
+    right: 20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+    border-radius: 50%;
+}
+
+.sky-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 4rem);
+    color: var(--white);
+    text-shadow: 0 0 20px rgba(255,255,255,0.5);
+    z-index: 1;
+}
+
+/* Celebration Scene */
+.celebration-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+    z-index: 2;
+    animation: scalePulse 2s infinite alternate;
+}
+
+@keyframes scalePulse {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.05); }
+}
+
+/* Ending Scene */
+.ending-content {
+    text-align: center;
+    z-index: 2;
+}
+
+.ending-subtitle {
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    color: var(--white);
+}
+
+.signature-large {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    font-style: italic;
+    color: var(--gold);
+    margin-top: 4rem;
+}
+
+.glowing-roses {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+}
