@@ -486,6 +486,14 @@ body {
     color: var(--primary-red);
 }
 
+.envelope.open {
+    transform: translateY(10vh);
+}
+
+.envelope.open:hover {
+    transform: translateY(10vh);
+}
+
 .envelope.open .envelope-flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -496,12 +504,26 @@ body {
 }
 
 .envelope.open .letter-paper {
-    height: 500px;
-    bottom: 50px;
+    height: 60vh;
+    max-height: 500px;
+    bottom: 80px;
     z-index: 10;
     background: #fff;
-    padding: 40px;
+    padding: 30px 20px;
     overflow-y: auto;
+}
+
+.letter-paper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letter-paper::-webkit-scrollbar-track {
+    background: #fdf5e6;
+}
+
+.letter-paper::-webkit-scrollbar-thumb {
+    background: #d4af37;
+    border-radius: 4px;
 }
 
 .envelope.open .letter-content {
